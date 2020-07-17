@@ -16,43 +16,27 @@ public class Tictactoe {
             System.out.println();
         }
     };
-    public static int checkvalidity(int pos,char[][] board){
+    public static int checkvalidity(int pos,char[][] board,int user){
        // System.out.println("checked");
-        switch(pos){
-            case 1: if(board[0][0]==' ')return 0;break;
-            case 2: if(board[0][2]==' ')return 0;break;
-            case 3: if(board[0][4]==' ')return 0;break;
-            case 4: if(board[2][0]==' ')return 0;break;
-            case 5: if(board[2][2]==' ')return 0;break;
-            case 6: if(board[2][4]==' ')return 0;break;
-            case 7: if(board[4][0]==' ')return 0;break;
-            case 8: if(board[4][2]==' ')return 0;break;
-            case 9: if(board[4][4]==' ')return 0;break;
-        }
-        return 1;
-    };
-    
-    public static void position(int pos, char[][] board,int user ){
         char symbol;
         if(user==1)
             symbol='x';
         else symbol='0';
         switch(pos){
-            case 1: board[0][0]=symbol;break;
-            case 2: board[0][2]=symbol;break;
-            case 3: board[0][4]=symbol;break;
-            case 4: board[2][0]=symbol;break;
-            case 5: board[2][2]=symbol;break;
-            case 6: board[2][4]=symbol;break;
-            case 7: board[4][0]=symbol;break;
-            case 8: board[4][2]=symbol;break;
-            case 9: board[4][4]=symbol;break;
-        
+            case 1: if(board[0][0]==' '){board[0][0]=symbol;return 0;}break;
+            case 2: if(board[0][2]==' '){board[0][2]=symbol;return 0;}break;
+            case 3: if(board[0][4]==' '){board[0][4]=symbol;return 0;}break;
+            case 4: if(board[2][0]==' '){board[2][0]=symbol;return 0;}break;
+            case 5: if(board[2][2]==' '){board[2][2]=symbol;return 0;}break;
+            case 6: if(board[2][4]==' '){board[2][4]=symbol;return 0;}break;
+            case 7: if(board[4][0]==' '){board[4][0]=symbol;return 0;}break;
+            case 8: if(board[4][2]==' '){board[4][2]=symbol;return 0;}break;
+            case 9: if(board[4][4]==' '){board[4][4]=symbol;return 0;}break;
+            default : return 1;
         }
-        checkwinner(board,user);
-         printboard(board);
+        return 1;
     };
-    
+      
     public static void checkwinner(char [][] board,int user){
         char symbol;
         if(user==1)
@@ -73,39 +57,42 @@ public class Tictactoe {
                 if(user==1)System.out.println("player wins");
                 else if (user==0) System.out.println("cpu wins :("); printboard(board);
                 System.exit(0);
-                        }
+            }
     };
     public static void main(String[] args) {
-        // TODO code application logic here
-        char[][] board = {{' ','|',' ','|',' '},
+          char[][] board = {{' ','|',' ','|',' '},
                           {'-','-','-','-','-'},
                           {' ','|',' ','|',' '},
                           {'-','-','-','-','-'},
                           {' ','|',' ','|',' '} };
         printboard(board);
-        int i=0;
+        
+        Random rand = new Random();
+        Scanner Scan = new Scanner(System.in);
+        int cpupos = rand.nextInt(9)+1;
+        int playerpos;            
         while(true)
         {   
-            Random rand = new Random();
-          
-            Scanner Scan = new Scanner(System.in);
+            
             System.out.print("Enter your position:");
-            int playerpos = Scan.nextInt();
-            while(checkvalidity(playerpos,board)!=0)
+            playerpos = Scan.nextInt();    
+            while(checkvalidity(playerpos,board,1)!=0)
             {
                 System.out.println("position already occupied,pls enter new:");
-                playerpos = Scan.nextInt();
-                checkvalidity(playerpos,board);
+                playerpos = Scan.nextInt();    
             }
-            position(playerpos,board,1);
+            checkwinner(board,1);
+            printboard(board);
+            
             //cpu
-            int cpupos = rand.nextInt(9)+1;
-            while(checkvalidity(cpupos,board)!=0)
+          while(checkvalidity(cpupos,board,0)!=0)
             {
                 cpupos = rand.nextInt(9)+1;
-                checkvalidity(cpupos,board);
-            }System.out.println("cpu position:"+cpupos);
-            position(cpupos,board,0);                 
+             
+            }
+            System.out.println("cpu position:"+cpupos);
+            checkwinner(board,0);
+            printboard(board);
         }
     }    
 }
